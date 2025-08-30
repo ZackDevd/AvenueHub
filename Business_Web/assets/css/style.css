@@ -1,0 +1,219 @@
+/* ==============================
+   Global Body & Typography
+   ============================== */
+body {
+    font-family: "Georgia", serif;
+    color: #1c1b18;
+    background-color: #fbfaf5;
+    line-height: 1.7;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    color: #1f3b2c;
+    margin-bottom: 15px;
+}
+
+/* ==============================
+   Navbar – Old Money Theme
+   ============================== */
+.oldmoney-navbar {
+    background-color: #fbfaf5;
+    font-family: 'Playfair Display', serif;
+    border-bottom: 1px solid #d6d5cf;
+    padding: 0.8rem 1rem;
+}
+
+.oldmoney-navbar .navbar-brand {
+    color: #1f3b2c;
+    font-weight: 700;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+}
+
+.oldmoney-navbar .navbar-brand:hover {
+    color: #c0aa83;
+}
+
+.oldmoney-navbar .nav-link {
+    color: #1f3b2c;
+    font-weight: 500;
+    margin-right: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    transition: color 0.3s;
+}
+
+.oldmoney-navbar .nav-link:hover {
+    color: #c0aa83;
+}
+
+.oldmoney-navbar .btn-success,
+.oldmoney-navbar .btn-outline-success {
+    border-radius: 50px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+}
+
+.oldmoney-navbar .btn-success {
+    background-color: #1f3b2c;
+    border-color: #1f3b2c;
+    color: #fbfaf5;
+}
+
+.oldmoney-navbar .btn-success:hover {
+    background-color: #c0aa83;
+    border-color: #c0aa83;
+    color: #1c1b18;
+}
+
+.oldmoney-navbar .btn-outline-success {
+    color: #1f3b2c;
+    border-color: #1f3b2c;
+}
+
+.oldmoney-navbar .btn-outline-success:hover {
+    background-color: #c0aa83;
+    border-color: #c0aa83;
+    color: #1c1b18;
+}
+
+/* ==============================
+   Hero Section
+   ============================== */
+.hero-oldmoney {
+    background-color: #fdfaf3;
+    border-bottom: 1px solid #d6d5cf;
+    padding: 80px 0;
+    text-align: center;
+}
+
+.hero-oldmoney h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.hero-oldmoney p {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+/* ==============================
+   Cards – Businesses
+   ============================== */
+.oldmoney-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.oldmoney-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.oldmoney-card .card-body h5 {
+    color: #1f3b2c;
+    font-weight: 600;
+}
+
+.oldmoney-card .card-body p {
+    color: #555;
+    font-size: 0.9rem;
+}
+
+/* Buttons */
+.oldmoney-btn {
+  border-radius: 50px;
+  font-weight: 600;
+  border: 1.5px solid #1f3b2c;
+  color: #1f3b2c;
+  transition: all 0.3s;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  padding: 0.5rem 1rem;
+}
+
+.oldmoney-btn:hover {
+  background: #1f3b2c;
+  color: #fbfaf5;
+  text-decoration: none;
+}
+
+/* Inputs & Selects */
+.oldmoney-input, .oldmoney-select {
+    border-radius: 50px;
+    border: 1.5px solid #c0aa83;
+    background: #fbfaf5;
+    color: #1c1b18;
+    padding: 0.6rem 1rem;
+}
+
+/* ==============================
+   Footer – Old Money Theme
+   ============================== */
+.oldmoney-footer {
+    background-color: #fbfaf5;
+    border-top: 1px solid #d6d5cf;
+    font-family: 'Playfair Display', serif;
+    color: #1c1b18;
+    text-align: center;
+    padding: 2rem 1rem;
+    margin-top: 50px;
+}
+
+.oldmoney-footer .footer-brand {
+    color: #1f3b2c;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.oldmoney-footer p {
+    color: #1c1b18;
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+}
+
+.oldmoney-footer .footer-links a {
+    color: #1f3b2c;
+    text-decoration: none;
+    font-weight: 500;
+    margin: 0 8px;
+    transition: color 0.3s ease;
+}
+
+.oldmoney-footer .footer-links a:hover {
+    color: #c0aa83;
+}
+
+.oldmoney-footer small {
+    color: #7a7565;
+    font-weight: 400;
+    display: block;
+    margin-top: 5px;
+    font-size: 0.85rem;
+}
+
+/* ==============================
+   Utility Classes
+   ============================== */
+.text-deepgreen { color: #1f3b2c !important; }
+.text-muted { color: #555 !important; }
+
+/* ==============================
+   Responsive Tweaks
+   ============================== */
+@media (max-width: 768px) {
+    .hero-oldmoney h1 { font-size: 2.2rem; }
+    .hero-oldmoney p { font-size: 1rem; }
+    .oldmoney-navbar .nav-link { margin-right: 10px; font-size: 0.9rem; }
+}
