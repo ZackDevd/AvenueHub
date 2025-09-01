@@ -6,9 +6,10 @@ require_once __DIR__ . '/includes/header.php';
 <?php
 // Fetch categories
 $cats = [];
-$res = $conn->query("SELECT name FROM categories ORDER BY name ASC");
-while ($row = $res->fetch_assoc()) $cats[] = $row['name'];
-
+$catRes = $conn->query("SELECT name FROM categories ORDER BY name ASC");
+while ($row = $catRes->fetch_assoc()) {
+    $cats[] = $row['name'];
+}
 
 // Handle search filters
 $q        = trim($_GET['q'] ?? '');
@@ -45,13 +46,13 @@ $stmt->close();
 ?>
 
 <!-- Hero Section -->
-<section class="hero-oldmoney d-flex align-items-center text-center py-5">
+<section class="hero-oldmoney d-flex align-items-center text-center py-5" style="background: linear-gradient(135deg,#f0f5f1,#ffffff);">
   <div class="container">
-    <h1 class="display-4 fw-bold text-deepgreen mb-3">Avenue Hub</h1>
+    <h1 class="display-4 fw-bold text-deepgreen mb-3" style="font-family:'Playfair Display', serif;">Avenue Hub</h1>
     <p class="lead mb-4 text-muted">Connecting you with trusted local businesses with elegance and tradition.</p>
 
     <!-- Search Bar -->
-    <form class="row g-3 justify-content-center" method="get" action="index.php">
+    <form class="row g-3 justify-content-center mt-4" method="get" action="index.php">
       <div class="col-12 col-md-4">
         <input type="text" name="q" class="form-control form-control-lg oldmoney-input" placeholder="Search by name..." value="<?php echo htmlspecialchars($q); ?>">
       </div>
@@ -75,23 +76,12 @@ $stmt->close();
   </div>
 </section>
 
-<!-- Introduction Section -->
-<section class="py-5 text-center">
-  <div class="container">
-    <h2 class="fw-bold text-deepgreen mb-3">Why Avenue Hub?</h2>
-    <p class="text-muted mx-auto mb-4" style="max-width:700px;">
-      Avenue Hub is dedicated to connecting communities with trusted local businesses. Our platform combines **classic elegance** with modern accessibility, making it effortless for customers and business owners alike.
-    </p>
-    <a href="add-business.php" class="btn btn-outline-success btn-lg oldmoney-btn">List Your Business</a>
-  </div>
-</section>
-
-<!-- Latest Businesses Section -->
-<section class="py-5 bg-light">
+<!-- Top Businesses Section -->
+<section class="py-5" style="background: linear-gradient(135deg,#f0f5f1,#ffffff);">
   <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h3 class="fw-bold text-deepgreen">Latest Businesses</h3>
-      <a href="business-list.php" class="text-success fw-semibold">View all →</a>
+      <h3 class="fw-bold text-deepgreen">Top Businesses</h3>
+      <a href="business-list.php" class="text-success fw-semibold">Show More →</a>
     </div>
 
     <div class="row g-4">
@@ -105,8 +95,8 @@ $stmt->close();
         $img = !empty($b['image']) ? "/Business_Web/assets/images/uploads/" . htmlspecialchars($b['image']) : "/Business_Web/assets/images/placeholder.jpg";
       ?>
         <div class="col-12 col-md-6 col-lg-4">
-          <div class="card border-0 shadow-sm h-100 oldmoney-card">
-            <img src="<?php echo $img; ?>" class="card-img-top" alt="<?php echo htmlspecialchars($b['name']); ?>">
+          <div class="card border-0 shadow-sm h-100 oldmoney-card" style="border-radius:15px; transition:0.3s; background-color:#fffef7;">
+            <img src="<?php echo $img; ?>" class="card-img-top" alt="<?php echo htmlspecialchars($b['name']); ?>" style="border-radius:15px 15px 0 0;">
             <div class="card-body">
               <h5 class="card-title fw-bold"><?php echo htmlspecialchars($b['name']); ?></h5>
               <p class="text-muted small mb-1"><?php echo htmlspecialchars($b['city']); ?><?php echo $b['state'] ? ', ' . htmlspecialchars($b['state']) : ''; ?></p>
@@ -122,14 +112,22 @@ $stmt->close();
   </div>
 </section>
 
-<!-- Testimonials / Optional Section -->
-<section class="py-5 text-center">
+<!-- Introduction Section -->
+<section class="py-5 text-center" style="background: linear-gradient(135deg,#f0f5f1,#ffffff); margin-bottom:30px;">
   <div class="container">
-    <h2 class="fw-bold text-deepgreen mb-3">What Our Users Say</h2>
+    <h2 class="fw-bold text-deepgreen mb-3">Why Avenue Hub?</h2>
     <p class="text-muted mx-auto mb-4" style="max-width:700px;">
-      Trusted, elegant, and reliable – our users love the classic feel of Avenue Hub. Join the network of satisfied businesses and happy customers today.
+      Avenue Hub is dedicated to connecting communities with trusted local businesses. Our platform combines <strong>classic elegance</strong> with modern accessibility, making it effortless for customers and business owners alike.
     </p>
+    <a href="add-business.php" class="btn btn-outline-success btn-lg oldmoney-btn">List Your Business</a>
   </div>
 </section>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+
+<style>
+.oldmoney-navbar { position: sticky; top: 0; z-index: 999; background-color:#f8f8f5; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+.oldmoney-card { border:1px solid #e3e0d7; }
+.oldmoney-btn { border-radius:50px; font-weight:500; }
+.text-deepgreen { color:#1f3b2c !important; }
+</style>

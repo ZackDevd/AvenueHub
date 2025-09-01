@@ -2,7 +2,26 @@
 require_once 'db.php';
 require_once 'includes/header.php';
 
+
 $errors = [];
+$cookie_email = $_COOKIE['remember_email'] ?? '';
+$cookie_pass  = $_COOKIE['remember_pass'] ?? '';
+
+// Encryption key for password in cookie (keep it secret & unique!)
+define('REMEMBER_KEY', 'YOUR_SECRET_KEY_HERE');
+
+function encryptCookie($data) {
+    return openssl_encrypt($data, 'AES-128-ECB', REMEMBER_KEY);
+}
+
+function decryptCookie($data) {
+    return openssl_decrypt($data, 'AES-128-ECB', REMEMBER_KEY);
+}
+
+// Decrypt password from cookie if exists
+if ($cookie_pass) {
+    $cookie_pass = decryptCookie($cookie_pass);
+}
 
 // Handle login
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -21,22 +40,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
 
         if ($user && password_verify($password, $user['password'])) {
-            session_start();
+            // ✅ Store session
             $_SESSION['user'] = [
-                'id' => $user['user_id'],
-                'name' => $user['name'],
-                'email' => $user['email'],
+                'id'       => $user['user_id'],
+                'name'     => $user['name'],
+                'email'    => $user['email'],
                 'is_admin' => $user['is_admin']
             ];
 
-            // Remember Me - set cookie for 7 days
+            // ✅ Remember Me (7 days)
             if ($remember) {
                 setcookie('remember_email', $email, time() + 604800, '/'); // 7 days
+                setcookie('remember_pass', encryptCookie($password), time() + 604800, '/');
             } else {
                 setcookie('remember_email', '', time() - 3600, '/');
+                setcookie('remember_pass', '', time() - 3600, '/');
             }
 
-            header("Location: index.php");
+            // ✅ Redirect based on role
+            if ($user['is_admin'] == 1) {
+                header("Location: admin.php");
+            } else {
+                header("Location: index.php");
+            }
             exit;
         } else {
             $errors[] = "Invalid email or password.";
@@ -56,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="alert alert-danger oldmoney-alert">
               <ul class="mb-0">
                 <?php foreach($errors as $e): ?>
-                  <li><?php echo e($e); ?></li>
+                  <li><?php echo htmlspecialchars($e); ?></li>
                 <?php endforeach; ?>
               </ul>
             </div>
@@ -66,19 +92,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="mb-3">
               <label class="form-label">Email</label>
               <input type="email" name="email" class="form-control oldmoney-input" required 
-                     value="<?php echo e($_POST['email'] ?? $_COOKIE['remember_email'] ?? ''); ?>" placeholder="example@email.com">
+                     value="<?php echo htmlspecialchars($_POST['email'] ?? $cookie_email ?? ''); ?>" placeholder="example@email.com">
             </div>
 
             <!-- Password Field -->
-             <label class="form-label w-100">Password</label>
-              <div class="mb-3 position-relative d-flex align-items-center">
-              <input type="password" name="password" class="form-control oldmoney-input pe-5" required placeholder="********" id="password">
+            <label class="form-label w-100">Password</label>
+            <div class="mb-3 position-relative d-flex align-items-center">
+              <input type="password" name="password" class="form-control oldmoney-input pe-5" required placeholder="********" id="password"
+                     value="<?php echo htmlspecialchars($_POST['password'] ?? $cookie_pass ?? ''); ?>">
               <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('password', this)"></i>
             </div>
 
             <div class="mb-3 form-check d-flex justify-content-between">
               <div>
-                <input type="checkbox" name="remember" class="form-check-input" id="remember" <?php echo isset($_POST['remember'])?'checked':''; ?>>
+                <input type="checkbox" name="remember" class="form-check-input" id="remember" 
+                       <?php echo isset($_POST['remember']) || $cookie_email ? 'checked' : ''; ?>>
                 <label class="form-check-label small" for="remember">Remember Me</label>
               </div>
               <div>
@@ -89,7 +117,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button class="btn oldmoney-btn w-100" type="submit">Login</button>
           </form>
 
-          <p class="mt-3 text-center small">Don't have an account? <a href="register.php" class="text-deepgreen fw-semibold">Register</a></p>
+          <p class="mt-3 text-center small">Don't have an account? 
+            <a href="register.php" class="text-deepgreen fw-semibold">Register</a>
+          </p>
         </div>
       </div>
     </div>

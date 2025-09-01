@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avenue Hub</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary-dark: #2B2D42;
+      --secondary-dark: #4A0538;
+      --tertiary-dark: #152E4B;
+      --accent-light: #B7C3E1;
+      --white-soft: #F9F9F9;
+      --text-color-light-bg: #333333;
+      --text-color-dark-bg: #F9F9F9;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--white-soft);
+      color: var(--text-color-light-bg);
+      margin: 0;
+    }
+
+    /*--- Navbar ---*/
+    .lux-navbar {
+      background-color: #fff;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+      padding: 1.5rem 0;
+    }
+    .lux-navbar .nav-link {
+      font-weight: 400;
+      color: var(--primary-dark);
+      transition: color 0.2s ease;
+      position: relative;
+    }
+    .lux-navbar .nav-link:hover, .lux-navbar .nav-link.active {
+      color: var(--secondary-dark);
+    }
+    .lux-navbar .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--secondary-dark);
+      transition: width 0.3s ease;
+    }
+    .lux-navbar .nav-link:hover::after, .lux-navbar .nav-link.active::after {
+      width: 100%;
+    }
+
+
+    /*--- Hero Section ---*/
+    .hero-lux {
+      padding: 100px 0 120px;
+      background: linear-gradient(135deg, var(--tertiary-dark) 0%, var(--primary-dark) 100%);
+      text-align: center;
+      position: relative;
+      color: var(--text-color-dark-bg);
+      overflow: hidden;
+    }
+    .hero-lux::before, .hero-lux::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity=".05"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(#noiseFilter)"/></svg>');
+      background-size: 150px;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .hero-lux::after {
+      opacity: 0.08;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity=".05" ><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(#noiseFilter)"/></svg>');
+      background-blend-mode: overlay;
+    }
+    .hero-lux .container {
+      position: relative;
+      z-index: 2;
+    }
+    .hero-lux h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+      color: var(--text-color-dark-bg);
+      text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    .hero-lux p {
+      font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+      color: var(--accent-light);
+      max-width: 750px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /*--- Search Bar ---*/
+    .search-form .form-control, .search-form .form-select {
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 0.85rem 1.5rem;
+      font-size: 1rem;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--text-color-dark-bg);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+    .search-form .form-control::placeholder, .search-form .form-select option {
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .search-form .form-control:focus, .search-form .form-select:focus {
+      border-color: var(--accent-light);
+      box-shadow: 0 0 0 0.25rem rgba(183, 195, 225, 0.4);
+      background-color: rgba(255, 255, 255, 0.2);
+      color: var(--text-color-dark-bg);
+    }
+
+    /*--- Buttons ---*/
+    .btn-lux-primary {
+      background-color: var(--secondary-dark);
+      border-color: var(--secondary-dark);
+      color: var(--text-color-dark-bg);
+      font-weight: 500;
+      border-radius: 30px;
+      padding: 0.85rem 2.5rem;
+      transition: all 0.2s ease;
+      letter-spacing: 0.5px;
+    }
+    .btn-lux-primary:hover {
+      background-color: #3d042d;
+      border-color: #3d042d;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .btn-outline-lux {
+      color: var(--primary-dark);
+      border-color: var(--primary-dark);
+      background-color: transparent;
+      border-radius: 30px;
+      padding: 0.85rem 2.5rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      letter-spacing: 0.5px;
+    }
+    .btn-outline-lux:hover {
+      background-color: var(--primary-dark);
+      color: var(--text-color-dark-bg);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /*--- Cards ---*/
+    .business-card {
+      border: none;
+      border-radius: 12px;
+      background-color: #fff;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+    }
+    .business-card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+    .business-card .card-img-top {
+      border-radius: 12px 12px 0 0;
+      height: 220px;
+      object-fit: cover;
+    }
+    .business-card .card-body {
+      padding: 1.75rem;
+    }
+    .business-card .card-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 0.75rem;
+    }
+    .business-card .card-text {
+        color: #555;
+    }
+    .business-card .card-footer {
+      border-top: 1px solid #eee;
+      background-color: var(--white-soft);
+      padding: 1.5rem 1.75rem;
+    }
+
+    /*--- Featured Section ---*/
+    .featured-section h3 {
+        font-family: 'Playfair Display', serif;
+        color: var(--secondary-dark);
+        font-weight: 700;
+        font-size: 2.5rem;
+    }
+    .featured-section .show-more-link {
+        color: var(--tertiary-dark);
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+    .featured-section .show-more-link:hover {
+        color: var(--secondary-dark);
+    }
+
+
+    /*--- Introduction Section (Why Avenue Hub) ---*/
+    .intro-section {
+        background-color: var(--white-soft);
+        padding: 80px 0;
+    }
+    .intro-section h2 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--primary-dark);
+        font-size: clamp(2rem, 5vw, 3.5rem);
+    }
+    .intro-section p {
+        font-size: 1.15rem;
+        color: #555;
+    }
+
+
+    /*--- Footer ---*/
+    .lux-footer {
+      background-color: var(--primary-dark);
+      padding: 70px 0 30px;
+      text-align: center;
+      color: var(--accent-light);
+    }
+    .lux-footer .footer-brand {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: var(--text-color-dark-bg);
+        margin-bottom: 1.5rem;
+    }
+    .lux-footer p {
+        color: var(--accent-light);
+        margin-bottom: 2rem;
+    }
+    .lux-footer .footer-links a {
+      color: var(--accent-light);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      margin: 0 15px;
+      position: relative;
+    }
+    .lux-footer .footer-links a:hover {
+      color: var(--text-color-dark-bg);
+    }
+    .lux-footer hr {
+      width: 100px;
+      margin: 2rem auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      opacity: 1;
+    }
+    .lux-footer small {
+        color: rgba(255, 255, 255, 0.6);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg lux-navbar">
+    <div class="container">
+      <a class="navbar-brand d-none d-lg-block" href="#"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="navMain" class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Browse</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Add Business</a></li>
+        </ul>
+        <div class="d-flex ms-lg-4 mt-3 mt-lg-0">
+          <a class="btn btn-outline-lux me-2" href="#">Login</a>
+          <a class="btn btn-lux-primary" href="#">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero-lux">
+    <div class="container">
+      <h1>Discover Surat's Finest</h1>
+      <p>Connecting you with exclusive local businesses, curated for your elevated lifestyle.</p>
+
+      <form class="row g-3 justify-content-center mt-5 search-form">
+        <div class="col-12 col-md-5 col-lg-4">
+          <input type="text" class="form-control form-control-lg" placeholder="Search for a business...">
+        </div>
+        <div class="col-12 col-md-3 col-lg-2">
+          <input type="text" class="form-control form-control-lg" placeholder="City (e.g., Surat)">
+        </div>
+        <div class="col-12 col-md-4 col-lg-3">
+          <select class="form-select form-select-lg">
+            <option value="">All Categories</option>
+            <option>Restaurants</option>
+            <option>Boutiques</option>
+            <option>Health & Wellness</option>
+            <option>Art & Culture</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-4 col-lg-2 d-grid">
+          <button class="btn btn-lux-primary btn-lg">Search</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="py-5 featured-section">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center mb-5">
+        <h3 class="fw-bold">Featured Businesses</h3>
+        <a href="#" class="show-more-link">View All <i class="fas fa-arrow-right fa-sm ms-2"></i></a>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-12 col-sm-6 col-lg-4">
+          <div class="card business-card">
+            <img src="https://via.placeholder.com/400x250/3a042d/f9f9f9?text=Fine+Dining" class="card-img-top" alt="Fine Dining Restaurant">
+            <div class="card-body">
+              <h5 class="card-title">The Regal Spoons</h5>
+              <p class="text-muted small mb-1">Surat, Gujarat</p>
+              <p class="mb-0 small"><i class="fas fa-phone-alt me-1 text-muted"></i> +91 98765 43210</p>
+            </div>
+            <div class="card-footer">
+              <a class="btn btn-outline-lux w-100" href="#">Explore</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-12 col-sm-6 col-lg-4">
+          <div class="card business-card">
+            <img src="https://via.placeholder.com/400x250/152E4B/f9f9f9?text=Boutique+Fashion" class="card-img-top" alt="Fashion Boutique">
+            <div class="card-body">
+              <h5 class="card-title">Azure Threads Boutique</h5>
+              <p class="text-muted small mb-1">Adajan, Surat</p>
+              <p class="mb-0 small"><i class="fas fa-phone-alt me-1 text-muted"></i> +91 99887 76655</p>
+            </div>
+            <div class="card-footer">
+              <a class="btn btn-outline-lux w-100" href="#">Explore</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-12 col-sm-6 col-lg-4">
+          <div class="card business-card">
+            <img src="https://via.placeholder.com/400x250/2B2D42/f9f9f9?text=Luxury+Spa" class="card-img-top" alt="Luxury Spa">
+            <div class="card-body">
+              <h5 class="card-title">Zenith Wellness Spa</h5>
+              <p class="text-muted small mb-1">Pal, Surat</p>
+              <p class="mb-0 small"><i class="fas fa-phone-alt me-1 text-muted"></i> +91 91234 56789</p>
+            </div>
+            <div class="card-footer">
+              <a class="btn btn-outline-lux w-100" href="#">Explore</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5 text-center intro-section">
+    <div class="container">
+      <h2 class="mb-3">Your Gateway to Exclusive Experiences in Surat</h2>
+      <p class="mx-auto mb-4" style="max-width:800px;">
+        Avenue Hub curates the finest establishments in Surat, offering a seamless connection to **unparalleled services** and **distinguished local businesses**. Elevate your lifestyle with ease.
+      </p>
+      <a href="#" class="btn btn-lux-primary btn-lg">List Your Business</a>
+    </div>
+  </section>
+
+  <footer class="lux-footer">
+    <h5 class="footer-brand">Avenue Hub</h5>
+    <p>Discover excellence. Experience luxury.</p>
+    <div class="footer-links mb-3">
+      <a href="#">Home</a>
+      <a href="#">Browse Businesses</a>
+      <a href="#">Add Business</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+    <hr>
+    <small>&copy; 2025 Avenue Hub. All rights reserved.</small>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

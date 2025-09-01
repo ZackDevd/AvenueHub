@@ -7,7 +7,6 @@ $cats = [];
 $res = $conn->query("SELECT name FROM categories ORDER BY name ASC");
 while ($row = $res->fetch_assoc()) $cats[] = $row['name'];
 
-
 // Handle filters
 $q        = trim($_GET['q'] ?? '');
 $city     = trim($_GET['city'] ?? '');
@@ -88,10 +87,21 @@ $pages = ceil($total / $limit);
       <div class="col-lg-9">
         <h3 class="fw-bold mb-4 text-deepgreen" style="font-family:'Playfair Display',serif;">Browse Businesses</h3>
 
+        <?php if ($total > 0): ?>
+          <p class="small text-muted mb-3">
+            Showing <strong><?php echo $offset+1; ?></strong> –
+            <strong><?php echo min($offset+$limit, $total); ?></strong>
+            of <strong><?php echo $total; ?></strong> results
+          </p>
+        <?php endif; ?>
+
         <div class="row g-4">
           <?php if (count($biz) === 0): ?>
             <div class="col-12">
-              <div class="alert alert-light border">No businesses found. Try different filters or <a href="add-business.php" class="text-success">add a business</a>.</div>
+              <div class="alert alert-light border">
+                No businesses found. Try different filters or 
+                <a href="add-business.php" class="text-success">add a business</a>.
+              </div>
             </div>
           <?php endif; ?>
 
@@ -116,20 +126,66 @@ $pages = ceil($total / $limit);
         </div>
 
         <!-- Pagination -->
-        <?php if ($pages > 1): ?>
-          <nav class="mt-4">
-            <ul class="pagination justify-content-center">
-              <?php for ($i=1; $i<=$pages; $i++): ?>
-                <li class="page-item <?php echo $i==$page?'active':''; ?>">
-                  <a class="page-link oldmoney-btn" href="?<?php echo http_build_query(array_merge($_GET,['page'=>$i])); ?>"><?php echo $i; ?></a>
-                </li>
-              <?php endfor; ?>
-            </ul>
-          </nav>
-        <?php endif; ?>
+        <!-- Pagination -->
+<?php if ($pages > 1): ?>
+  <nav class="mt-5">
+    <ul class="pagination justify-content-center oldmoney-pagination">
+      <?php if ($page > 1): ?>
+        <li class="page-item">
+          <a class="page-link" href="?<?php echo http_build_query(array_merge($_GET, ['page'=>$page-1])); ?>">&laquo; Prev</a>
+        </li>
+      <?php endif; ?>
+
+      <?php 
+        $range = 2; // how many numbers around current page
+        for ($i = max(1, $page - $range); $i <= min($pages, $page + $range); $i++): 
+      ?>
+        <li class="page-item <?php echo $i==$page?'active':''; ?>">
+          <a class="page-link" href="?<?php echo http_build_query(array_merge($_GET, ['page'=>$i])); ?>">
+            <?php echo $i; ?>
+          </a>
+        </li>
+      <?php endfor; ?>
+
+      <?php if ($page < $pages): ?>
+        <li class="page-item">
+          <a class="page-link" href="?<?php echo http_build_query(array_merge($_GET, ['page'=>$page+1])); ?>">Next &raquo;</a>
+        </li>
+      <?php endif; ?>
+    </ul>
+  </nav>
+<?php endif; ?>
+
       </div>
     </div>
   </div>
 </section>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+
+<style>
+
+.oldmoney-pagination .page-link {
+  font-family: "Playfair Display", serif;
+  color: #1c3d2e;
+  border: none;
+  background: transparent;
+  margin: 0 4px;
+  padding: 6px 12px;
+  transition: color 0.3s, border-bottom 0.3s;
+}
+
+.oldmoney-pagination .page-link:hover {
+  color: #2f6f4f;
+  border-bottom: 2px solid #2f6f4f;
+  background: transparent;
+}
+
+.oldmoney-pagination .active .page-link {
+  color: #2f6f4f;
+  font-weight: bold;
+  border-bottom: 2px solid #2f6f4f;
+  background: transparent;
+}
+
+  </style>
