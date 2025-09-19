@@ -24,9 +24,9 @@ if (!$biz) {
     exit;
 }
 
-$img = !empty($biz['image']) 
-    ? "/Business_Web/assets/images/uploads/" . e($biz['image']) 
-    : "/Business_Web/assets/images/placeholder.jpg";
+$img = !empty($b['image']) 
+            ? "assets/images/uploads/" . htmlspecialchars($b['image']) 
+            : "assets/images/placeholder.jpg";
 ?>
 
 <!-- Business Hero -->

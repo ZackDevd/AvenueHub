@@ -14,6 +14,10 @@ function e($str) { return htmlspecialchars($str ?? '', ENT_QUOTES, 'UTF-8'); }
   <title>Avenue Hub — Find Local Businesses</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- SEO -->
+  <meta name="description" content="Avenue Hub helps you find trusted local businesses and services in your area.">
+  <meta name="author" content="Avenue Hub Team">
+
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
@@ -28,18 +32,27 @@ function e($str) { return htmlspecialchars($str ?? '', ENT_QUOTES, 'UTF-8'); }
 </head>
 <body>
 <nav class="navbar navbar-expand-lg oldmoney-navbar py-3">
-  <div class="container">
-    <!-- Left links -->
-    <div class="collapse navbar-collapse" id="navMain">
-      <ul class="navbar-nav me-auto">
+  <div class="container d-flex align-items-center">
+    
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center me-auto" href="index.php">
+      <img src="Avenue.png" alt="Avenue Hub Logo" height="80" class="me-2">
+    </a>
+
+    <!-- Centered Nav Links -->
+    <div class="collapse navbar-collapse justify-content-center" id="navMain">
+      <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link fw-semibold text-deepgreen" href="index.php">Home</a></li>
         <li class="nav-item"><a class="nav-link fw-semibold text-deepgreen" href="about.php">About Us</a></li>
         <li class="nav-item"><a class="nav-link fw-semibold text-deepgreen" href="business-list.php">Browse</a></li>
         <li class="nav-item"><a class="nav-link fw-semibold text-deepgreen" href="add-business.php">Add Business</a></li>
+        <li class="nav-item"><a class="nav-link fw-semibold text-deepgreen" href="contact.php">Contact</a></li>
       </ul>
+    </div>
 
-      <!-- Right buttons -->
-      <ul class="navbar-nav ms-auto">
+    <!-- Right Buttons -->
+    <div class="d-flex align-items-center ms-auto">
+      <ul class="navbar-nav">
         <?php if (!empty($_SESSION['user'])): ?>
           <li class="nav-item">
             <a class="btn btn-outline-success oldmoney-btn" href="logout.php">Logout</a>

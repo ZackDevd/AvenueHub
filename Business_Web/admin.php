@@ -52,17 +52,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
         $stmt->close();
     }
+
+    // Mark message as read
+    if (isset($_POST['mark_read'])) {
+        $stmt = $conn->prepare("UPDATE contact_messages SET status='read' WHERE id=?");
+        $stmt->bind_param("i", $_POST['mark_read']);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    // Delete message
+    if (isset($_POST['delete_message'])) {
+        $stmt = $conn->prepare("DELETE FROM contact_messages WHERE id=?");
+        $stmt->bind_param("i", $_POST['delete_message']);
+        $stmt->execute();
+        $stmt->close();
+    }
 }
 
 // Dashboard stats
 $totalBusinesses = $conn->query("SELECT COUNT(*) as total FROM businesses")->fetch_assoc()['total'];
 $pendingBusinesses = $conn->query("SELECT COUNT(*) as total FROM businesses WHERE status='pending'")->fetch_assoc()['total'];
 $totalUsers = $conn->query("SELECT COUNT(*) as total FROM users")->fetch_assoc()['total'];
+$totalMessages = $conn->query("SELECT COUNT(*) as total FROM contact_messages")->fetch_assoc()['total'];
 
-// Fetch businesses, users, categories
+// Fetch businesses, users, categories, messages
 $bizRes = $conn->query("SELECT * FROM businesses ORDER BY created_at DESC");
 $userRes = $conn->query("SELECT * FROM users ORDER BY user_id DESC");
-$catRes = $conn->query("SELECT * FROM categories ORDER BY name ASC");
+$catRes  = $conn->query("SELECT * FROM categories ORDER BY name ASC");
+$msgRes  = $conn->query("SELECT * FROM contact_messages ORDER BY created_at DESC");
 ?>
 
 <section class="py-5 bg-light">
@@ -75,6 +93,7 @@ $catRes = $conn->query("SELECT * FROM categories ORDER BY name ASC");
       <li class="nav-item"><a class="nav-link <?php echo $tab=='businesses'?'active':''; ?>" href="?tab=businesses">Businesses</a></li>
       <li class="nav-item"><a class="nav-link <?php echo $tab=='users'?'active':''; ?>" href="?tab=users">Users</a></li>
       <li class="nav-item"><a class="nav-link <?php echo $tab=='categories'?'active':''; ?>" href="?tab=categories">Categories</a></li>
+      <li class="nav-item"><a class="nav-link <?php echo $tab=='messages'?'active':''; ?>" href="?tab=messages">Messages</a></li>
       <li class="nav-item ms-auto"><a class="nav-link text-danger" href="logout.php">Logout</a></li>
     </ul>
 
@@ -101,6 +120,12 @@ $catRes = $conn->query("SELECT * FROM categories ORDER BY name ASC");
               <h3 class="text-deepgreen"><?php echo $totalUsers; ?></h3>
             </div>
           </div>
+          <div class="col-md-4">
+            <div class="card shadow-sm p-4 oldmoney-card text-center">
+              <h5>Total Messages</h5>
+              <h3 class="text-deepgreen"><?php echo $totalMessages; ?></h3>
+            </div>
+          </div>
         </div>
 
       <!-- BUSINESSES -->
@@ -123,12 +148,12 @@ $catRes = $conn->query("SELECT * FROM categories ORDER BY name ASC");
                 <td><?php echo e($b['category']); ?></td>
                 <td><?php echo e($b['city']); ?></td>
                 <td>
-                  <?php echo $b['status']=='pending'?'<span class="badge bg-warning text-dark">Pending</span>':'<span class="badge bg-success">Approved</span>'; ?>
+                  <?php echo $b['status']=='pending'?'<span class="badge bg-warning text-dark">Pending</span>':'<span class="badge bg-success">Online</span>'; ?>
                 </td>
                 <td>
                   <?php if($b['status']=='pending'): ?>
                     <form method="post" class="d-inline">
-                      <button name="approve_business" value="<?php echo $b['business_id']; ?>" class="btn btn-success btn-sm">Approve</button>
+                      <button name="approve_business" value="<?php echo $b['business_id']; ?>" class="btn btn-success btn-sm">Online</button>
                     </form>
                   <?php endif; ?>
                   <form method="post" class="d-inline">
@@ -189,6 +214,47 @@ $catRes = $conn->query("SELECT * FROM categories ORDER BY name ASC");
             </li>
           <?php endwhile; ?>
         </ul>
+
+      <!-- MESSAGES -->
+      <?php elseif($tab=='messages'): ?>
+        <h4 class="fw-bold mb-3 text-deepgreen">Contact Messages</h4>
+        <table class="table table-hover oldmoney-card">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Message</th>
+              <th>Status</th>
+              <th>Received</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php while($m = $msgRes->fetch_assoc()): ?>
+              <tr>
+                <td><?php echo e($m['name']); ?></td>
+                <td><?php echo e($m['email']); ?></td>
+                <td><?php echo e($m['phone']); ?></td>
+                <td><?php echo nl2br(e($m['message'])); ?></td>
+                <td>
+                  <?php echo $m['status']=='new' ? '<span class="badge bg-warning text-dark">New</span>' : '<span class="badge bg-secondary">Read</span>'; ?>
+                </td>
+                <td><?php echo e($m['created_at']); ?></td>
+                <td>
+                  <?php if($m['status']=='new'): ?>
+                    <form method="post" class="d-inline">
+                      <button name="mark_read" value="<?php echo $m['id']; ?>" class="btn btn-success btn-sm">Mark Read</button>
+                    </form>
+                  <?php endif; ?>
+                  <form method="post" class="d-inline">
+                    <button name="delete_message" value="<?php echo $m['id']; ?>" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            <?php endwhile; ?>
+          </tbody>
+        </table>
       <?php endif; ?>
     </div>
   </div>
